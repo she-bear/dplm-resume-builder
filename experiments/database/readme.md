@@ -60,3 +60,17 @@ MYSQL_PASSWORD=123
 ```
 
 Пользователь с именем MYSQL_USER и паролем MYSQL_PASSWORD будет иметь доступ только к БД MYSQL_DATABASE.
+
+## Процедура подключения SQL Workbench
+
+1. Запустить БД в контейнере (см. пп. Запуск БД в docker)
+
+2. Запустить MySQL Workbench
+
+3. На главном экране выбрать MySQL Connections, нажать + и задать параметры соединения с БД:
+* Connection Method: Standard (TCP/IP)
+* Host Name: 127.0.0.1
+* Port (= в текущем примере 3307)
+* User Name (root или заданный в параметре MYSQL_USER)
+
+В случае успешного соединения в появившемся окне слева на вкладке Schemas можно получить доступ к БД и её таблицам.
