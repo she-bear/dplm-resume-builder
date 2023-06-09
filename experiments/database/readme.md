@@ -4,7 +4,7 @@
 
 1. Запустить приложение Docker Desktop на Windows
 
-2. https://hub.docker.com/_/mysql - документация
+2. [Документация по mysql в docker](https://hub.docker.com/_/mysql)
 
 Демо-команда (запустить БД с доступом без пароля, удалить контейнер после окончания работы)
 ```
@@ -16,9 +16,9 @@ sudo docker run -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=true -p 3306:3306 mysql
 sudo docker run --name=mysql -e MYSQL_ROOT_PASSWORD=123 -d -p 3307:3306 mysql
 ```
 
-Запустить контейнер и считать переменные среды из файла (имя файла произвольное, путь - относительно места запуска, в моем случае experiments/database/mysql.env):
+Запустить контейнер и считать переменные среды из файла (имя файла произвольное, путь - относительно места запуска):
 ```
-sudo docker run --name=mysql --env-file mysql.env -d -p 3307:3306 mysql
+sudo docker run --name=mysql --env-file experiments/database/mysql.env -d -p 3307:3306 mysql
 ```
 
 Опции:
