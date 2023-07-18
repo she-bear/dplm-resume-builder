@@ -13,12 +13,12 @@ sudo docker run -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=true -p 3306:3306 mysql
 
 Запусть с root-паролем. В этом случае запуск из командной строки (docker exec -it mysql -p):
 ```
-sudo docker run --name=mysql -e MYSQL_ROOT_PASSWORD=123 -d -p 3307:3306 mysql
+sudo docker run --name=mysql -e MYSQL_ROOT_PASSWORD=123 -d -p 3306:3306 mysql
 ```
 
 Запустить контейнер и считать переменные среды из файла (имя файла произвольное, путь - относительно места запуска):
 ```
-sudo docker run --name=mysql --env-file experiments/database/mysql.env -d -p 3307:3306 mysql
+sudo docker run --name=mysql --env-file experiments/database/mysql.env -d -p 3306:3306 mysql
 ```
 
 Опции:
@@ -81,7 +81,7 @@ MYSQL_PASSWORD=123
 
 2. Docker-контейнер теперь запускается командой:
 ```
-docker run --name=mysql --env-file experiments/database/mysql.env -v resume-builder-volume:/var/lib/mysql -d -p 3308:3306 mysql
+docker run --name=mysql --env-file experiments/database/mysql.env -v resume-builder-volume:/var/lib/mysql -d -p 3306:3306 mysql
 ```
 Проверим, что docker-volume создан:
 ```
@@ -132,7 +132,7 @@ mysql> SELECT * FROM users;
 3. На главном экране выбрать MySQL Connections, нажать + и задать параметры соединения с БД:
 * Connection Method: Standard (TCP/IP)
 * Host Name: 127.0.0.1
-* Port (= в текущем примере 3307)
+* Port (= в текущем примере 3306)
 * User Name (root или заданный в параметре MYSQL_USER)
 
 В случае успешного соединения в появившемся окне слева на вкладке Schemas можно получить доступ к БД и её таблицам.
