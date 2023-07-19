@@ -223,3 +223,18 @@ r-entrypoint-initdb.d/db_init.sql -d -p 3308:3306 mysql
 docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docke
 r-entrypoint-initdb.d/db_init.sql -v resume-builder-volume:/var/lib/mysql -d -p 3308:3306 mysql
 ```
+
+## Файл инициализации БД (минимальный)
+
+Для инициализации БД будем использовать файл db_init.sql
+
+```
+USE resume;
+
+CREATE TABLE IF NOT EXISTS users(
+    id int NOT NULL AUTO_INCREMENT,
+    login varchar(255) UNIQUE NOT NULL,
+    password varchar(255) NOT NULL,
+    PRIMARY KEY(id)
+);
+```
