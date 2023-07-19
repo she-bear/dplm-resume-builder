@@ -162,11 +162,64 @@ SHOW DATABASES;
 ```
 USE resume;
 ```
-* Отправить sql-файл на выполнение:
+### Отправить sql-файл на выполнение
+Можно заранее создать список sql-инструкций, а потом выполнить их одним блоком.
+
+Существует два способа:
+* скопировать sql-файл внутрь контейнера
+
+[IF YOU ARE USING MYSQL INSIDE DOCKER](https://stackoverflow.com/questions/14684063/mysql-source-error-2)
+
+Недостатком этого способа является то, что sql-файл будет скопирован внутрь контейнера один раз и если потребуется изменить файл, то операцию нужно будет повторить (нет автоматизации)
+```
+# запускаем контейнер
+docker run --name=mysql --env-file experiments/database/mysql.env -d -p 3308:3306 mysql
+# копируем файл внутрь контейнера
+sudo docker cp  experiments/database/db_init.sql  mysql:/
+# заходим внутрь контейнера
+sudo docker exec -it mysql mysql -u olgaK -p
+# запускаем файл на выполнение
+mysql> source db_init.sql
 ```
 
+* подключить файл через volume и запустить на выполнение из хостовой системы
+
+[Initializing a fresh instance](https://hub.docker.com/_/mysql)
+```
+# создаем контейнер, подключаем sql-файл
+# в папке /docker-entrypoint-initdb.d/ хранятся файлы, которые будут запущены при инициализации контейнера
+# если файлов несколько, они будут исполнены в алфавитном порядке
+docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql -d -p 3308:3306 mysql
+
+
+# запустить файл на выполнение из хостовой системы
+mysql -P 3308 -h 127.0.0.1 -u olgaK -p < experiments/database/db_init.sql
+
+# либо (аналогично) изнутри контейнера через bash
+sudo docker exec -it mysql bash
+
+bash-4.4# mysql < /docker-entrypoint-initdb.d/db_init.sql
 ```
 
-## Файл инициализации БД (минимальный)
+> Нужно обратить внимание на то, что volume для хранения данных при использовании mysql в контейнере создается всегда, даже если явно не указан, например:
+```
+# в явном виде подключение volume не задано
+docker run --name=mysql --env-file experiments/database/mysql.env  -d -p 3308:3306 mysql
 
-Будем работать с файлом db_init.sql
+docker volume ls
+DRIVER    VOLUME NAME
+local     6d642e917269eb9ee65eced8250a5aaf966ab7ad5b7b38ddeaf0b851528f92f6
+```
+
+### Мы будем использовать способ, при котором sql-файл запускается автоматически при создании контейнера
+
+```
+docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docke
+r-entrypoint-initdb.d/db_init.sql -d -p 3308:3306 mysql
+```
+
+На данном этапе работы команда создания контейнера будет выглядеть следующим образом:
+```
+docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docke
+r-entrypoint-initdb.d/db_init.sql -v resume-builder-volume:/var/lib/mysql -d -p 3308:3306 mysql
+```
