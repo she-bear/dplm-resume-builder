@@ -238,3 +238,32 @@ CREATE TABLE IF NOT EXISTS users(
     PRIMARY KEY(id)
 );
 ```
+
+## Создание пользователя
+
+```
+INSERT users(login, password) VALUES ("user", "psw");
+```
+[Как вставлять данные в таблицы со столбцами AUTO_INCREMENT](https://stackoverflow.com/questions/8753371/how-to-insert-data-to-mysql-with-auto-incremented-columnfield)
+
+Такие варианты тоже работают:
+```
+INSERT users VALUES(NULL, "user", "psw");
+```
+```
+INSERT users VALUES(DEFAULT, "user", "psw");
+```
+
+При создании пользователя нужно получить его ID. Это делается командой:
+```
+SELECT LAST_INSERT_ID();
+```
+Важно понимать, что LAST_INSERT_ID() получит результат именно для ТЕКУЩЕЙ сессии.
+
+[Ссылка на ответ](https://stackoverflow.com/a/15821655/292986)
+
+## Проверка пароля
+Получить пароль пользователя по его логину:
+```
+ SELECT password FROM users WHERE login="login";
+```
