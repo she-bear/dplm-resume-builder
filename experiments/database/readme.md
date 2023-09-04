@@ -239,7 +239,8 @@ CREATE TABLE IF NOT EXISTS users(
 );
 ```
 
-## Создание пользователя
+## Запросы к БД (пользователь)
+### Создание пользователя
 
 ```
 INSERT users(login, password) VALUES ("user", "psw");
@@ -262,8 +263,55 @@ SELECT LAST_INSERT_ID();
 
 [Ссылка на ответ](https://stackoverflow.com/a/15821655/292986)
 
-## Проверка пароля
+### Проверка пароля
 Получить пароль пользователя по его логину:
 ```
  SELECT password FROM users WHERE login="login";
+```
+
+
+## Запросы к базе данных (Резюме)
+### Таблица резюме
+
+```
+CREATE TABLE IF NOT EXISTS resumes(
+    id int NOT NULL AUTO_INCREMENT,
+    user_id int NOT NULL,
+    resume_title VARCHAR(100),
+    resume_text TEXT,
+    PRIMARY KEY(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+```
+
+### Создание резюме
+```
+INSERT resumes 
+VALUES(DEFAULT, users.user_id, "title", "text");
+```
+
+### Редактирование резюме
+```
+UPDATE resumes
+SET resume_title = "new_title", resume_text = "new_text"
+WHERE (user_id=current_user) AND (id=resume_id);
+```
+
+### Удаление резюме
+```
+DELETE FROM resums
+WHERE (user_id=current_user) AND (id=resume_id);
+```
+
+### Получение текста резюме
+```
+SELECT resume_title, resume_text 
+FROM resumes 
+WHERE (user_id=current_user) AND (id=resume_id);
+```
+### Получение списка резюме
+```
+SELECT resume_title, resume_text
+FROM resumes
+WHERE (user_id=current_user);
 ```
