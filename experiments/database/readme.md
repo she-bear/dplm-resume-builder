@@ -58,6 +58,13 @@ MYSQL_DATABASE=resume
 MYSQL_USER=olgaK
 MYSQL_PASSWORD=123
 ```
+Заменяем на (чтобы оставить root-доступ и не было доступа без пароля):
+```
+MYSQL_ROOT_PASSWORD=123
+MYSQL_DATABASE=resume
+MYSQL_USER=olgaK
+MYSQL_PASSWORD=123
+```
 
 Пользователь с именем MYSQL_USER и паролем MYSQL_PASSWORD будет иметь доступ только к БД MYSQL_DATABASE.
 
