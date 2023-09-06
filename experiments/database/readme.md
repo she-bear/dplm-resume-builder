@@ -180,7 +180,7 @@ USE resume;
 Недостатком этого способа является то, что sql-файл будет скопирован внутрь контейнера один раз и если потребуется изменить файл, то операцию нужно будет повторить (нет автоматизации)
 ```
 # запускаем контейнер
-docker run --name=mysql --env-file experiments/database/mysql.env -d -p 3308:3306 mysql
+docker run --name=mysql --env-file experiments/database/mysql.env -d -p 3306:3306 mysql
 # копируем файл внутрь контейнера
 sudo docker cp  experiments/database/db_init.sql  mysql:/
 # заходим внутрь контейнера
@@ -196,11 +196,11 @@ mysql> source db_init.sql
 # создаем контейнер, подключаем sql-файл
 # в папке /docker-entrypoint-initdb.d/ хранятся файлы, которые будут запущены при инициализации контейнера
 # если файлов несколько, они будут исполнены в алфавитном порядке
-docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql -d -p 3308:3306 mysql
+docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql -d -p 3306:3306 mysql
 
 
 # запустить файл на выполнение из хостовой системы
-mysql -P 3308 -h 127.0.0.1 -u olgaK -p < experiments/database/db_init.sql
+mysql -P 3306 -h 127.0.0.1 -u olgaK -p < experiments/database/db_init.sql
 
 # либо (аналогично) изнутри контейнера через bash
 sudo docker exec -it mysql bash
@@ -211,7 +211,7 @@ bash-4.4# mysql < /docker-entrypoint-initdb.d/db_init.sql
 > Нужно обратить внимание на то, что volume для хранения данных при использовании mysql в контейнере создается всегда, даже если явно не указан, например:
 ```
 # в явном виде подключение volume не задано
-docker run --name=mysql --env-file experiments/database/mysql.env  -d -p 3308:3306 mysql
+docker run --name=mysql --env-file experiments/database/mysql.env  -d -p 3306:3306 mysql
 
 docker volume ls
 DRIVER    VOLUME NAME
@@ -222,13 +222,13 @@ local     6d642e917269eb9ee65eced8250a5aaf966ab7ad5b7b38ddeaf0b851528f92f6
 
 ```
 docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docke
-r-entrypoint-initdb.d/db_init.sql -d -p 3308:3306 mysql
+r-entrypoint-initdb.d/db_init.sql -d -p 3306:3306 mysql
 ```
 
 На данном этапе работы команда создания контейнера будет выглядеть следующим образом:
 ```
 docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docke
-r-entrypoint-initdb.d/db_init.sql -v resume-builder-volume:/var/lib/mysql -d -p 3308:3306 mysql
+r-entrypoint-initdb.d/db_init.sql -v resume-builder-volume:/var/lib/mysql -d -p 3306:3306 mysql
 ```
 
 ## Файл инициализации БД (минимальный)
