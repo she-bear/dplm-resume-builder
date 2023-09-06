@@ -312,13 +312,13 @@ WHERE (user_id=current_user) AND (id=resume_id);
 
 ### Получение текста резюме
 ```
-SELECT resume_title, resume_text 
+SELECT id, resume_title, resume_text 
 FROM resumes 
 WHERE (user_id=current_user) AND (id=resume_id);
 ```
 ### Получение списка резюме
 ```
-SELECT resume_title, resume_text
+SELECT id, resume_title
 FROM resumes
 WHERE (user_id=current_user);
 ```
