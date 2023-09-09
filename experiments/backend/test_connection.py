@@ -2,17 +2,16 @@ from getpass import getpass
 from mysql.connector import connect, Error
 
 import os
-import pprint
 
-env_var = os.environ
-print("User's Environment variable:")
-pprint.pprint(dict(env_var), width = 1)
+db_host = os.getenv("MYSQL_HOST", "localhost")
+db_user = os.getenv("MYSQL_USER", "root")
+db_password = os.getenv("MYSQL_PASSWORD", "")
 
 try:
     with connect(
-        host="localhost",
-        user=input("Имя пользователя: "),
-        password=getpass("Пароль: "),
+        host=db_host,
+        user=db_user,
+        password=db_password,
     ) as connection:
         print(connection)
 except Error as e:

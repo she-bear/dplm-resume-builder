@@ -47,3 +47,15 @@ deactivate
 ```
 pip install mysql-connector-python
 ```
+
+## Получение данные для входа (адрес, user, пароль) из переменных окружения
+
+Для обучающей версии необходимые переменные экспортирум через bash:
+```
+export MYSQL_HOST=localhost
+export MYSQL_USER=olgaK
+export MYSQL_PASSWORD=123
+```
+Команда export экспортирует переменную в окружающую среду оболочки так, чтобы ее значение стало доступным для MySQL и других процессов.
+
+В Python чтение переменных окружения осуществляется через os.environ object: [ссылка на документацию](https://www.geeksforgeeks.org/python-os-environ-object/) 
