@@ -103,3 +103,10 @@ export MYSQL_DATABASE=resume
 ```
 
 [Про SQL-инъекции](https://realpython.com/prevent-python-sql-injection/)
+
+После того, как пользователь добавлен, необходимо получить его ID. В нашем случае это можно сделать не через прямой запрос, а через объект cursor:
+```
+cursor.lastrowid
+``` 
+
+Также в объекте cursor есть поле rowcount - сколько строк добавлено/найдено/изменено.
