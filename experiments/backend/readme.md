@@ -59,7 +59,9 @@ export MYSQL_DATABASE=resume
 ```
 Команда export экспортирует переменную в окружающую среду оболочки так, чтобы ее значение стало доступным для MySQL и других процессов.
 
-В Python чтение переменных окружения осуществляется через os.environ object: [ссылка на документацию](https://www.geeksforgeeks.org/python-os-environ-object/)
+В Python чтение переменных окружения осуществляется через os.environ object: [ссылка на документацию.](https://www.geeksforgeeks.org/python-os-environ-object/)
+
+В отличие от прямого доступа к объекту, функция os.getenv не вызовет ошибки если нет переменной, а возьмет значение по умолчанию (если значение по умолчанию не указано, то None). [Подробнее...](https://docs.python.org/3/library/os.html#os.getenv)
 
 ## Запрос на добавление пользователя
 
