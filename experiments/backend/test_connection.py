@@ -1,12 +1,12 @@
 from getpass import getpass
-from mysql.connector import connect, Error
+from mysql.connector import connect, errors
 
 import os
+import sys
 
 # запрос на добавление пользователя
-def user_add():
-    user_login = input("Enter user login: ")
-    user_pwd = getpass("Enter user password: ")
+def user_add(user_login, user_pwd, cnx):
+    
     insert_user_query = """
     INSERT users
     VALUES
@@ -16,12 +16,19 @@ def user_add():
         user_login,
         user_pwd,
     )
-    return insert_user_query, val_tuple
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(insert_user_query, val_tuple)
+            cnx.commit()
+            # получить ID пользователя
+            return cursor.lastrowid
+    # нужно ли здесь обрабатывать все возможные ошибки при вставке данных?
+    except errors.IntegrityError:
+        print('Duplicate entry ', user_login)
+
 
 # создать резюме
-def create_resume(user_id):
-    resume_title = input("Enter resume title: ")
-    resume_text = input("Enter resume text: ")
+def create_resume(user_id, resume_title, resume_text, cnx):
     create_resume_query = """
     INSERT resumes 
     VALUES
@@ -32,7 +39,15 @@ def create_resume(user_id):
         resume_title,
         resume_text,
     )
-    return create_resume_query, val_tuple
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(create_resume_query, val_tuple)
+            cnx.commit()
+            # получить маркер успешности операции
+            return cursor.rowcount
+    # нужно ли здесь обрабатывать все возможные ошибки при вставке данных?
+    except errors:
+        print('Data insertion error for user ', user_login)
 
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
@@ -48,19 +63,21 @@ try:
         database=db_name
     ) as connection:
         print(connection)
-        with connection.cursor() as cursor:
-            query, tuple = user_add()
-            cursor.execute(query, tuple)
-            connection.commit()
-            # получить ID пользователя
-            user_id = cursor.lastrowid
-            # здесь анализ ошибки 
 
-            query, tuple = create_resume(user_id)
-            cursor.execute(query, tuple)
-            connection.commit()
-            # получить ID пользователя
-            print(cursor.rowcount)
-            # здесь анализ ошибки
-except Error as e:
-    print(e)
+        user_login = input("Enter user login: ")
+        user_pwd = getpass("Enter user password: ")
+        user_id = user_add(user_login, user_pwd, connection)
+        if user_id == None:
+            sys.exit(1)
+        else: 
+            print("User added, ID=", user_id)
+            
+        resume_title = input("Enter resume title: ")
+        resume_text = input("Enter resume text: ")
+        row_count = create_resume(user_id, resume_title, resume_text, connection)
+        if row_count == None:
+            sys.exit(1)
+        else: 
+            print("Resume added, row = ", row_count)
+except errors.DatabaseError:
+    print('Cannot connect to MySQL server')
