@@ -66,6 +66,25 @@ def get_resume(user_id, resume_id, cnx):
     except errors:
         print('Data receiving error for resume!')
 
+# получить все резюме пользователя
+def get_resume_list(user_id, cnx):
+    get_resume_list_query = """
+    SELECT id, resume_title
+    FROM resumes
+    WHERE (user_id=%s)
+    """
+    val_tuple = (
+        user_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(get_resume_list_query, val_tuple)
+            result = cursor.fetchall()
+            return len(result), result
+    except errors:
+        print('Data receiving error for resume list!')
+
+
 db_host = os.getenv("MYSQL_HOST", "localhost")
 db_user = os.getenv("MYSQL_USER", "root")
 db_password = os.getenv("MYSQL_PASSWORD", "")
@@ -96,5 +115,22 @@ try:
             sys.exit(1)
         else: 
             print("Resume added, ID = ", resume_id)
+
+        row_count, data = get_resume(user_id, resume_id, connection)
+        if row_count == 0:
+            print('Cannot recieve resume data!')
+            sys.exit(1)
+        else:
+            for row in data:
+                print (row)
+
+        row_count, data = get_resume_list(32, connection)
+        if row_count == 0:
+            print('Cannot recieve resume data!')
+            sys.exit(1)
+        else:
+            for row in data:
+                print (row)
+  
 except errors.DatabaseError:
     print('Cannot connect to MySQL server')
