@@ -47,6 +47,24 @@ def create_resume(user_id, resume_title, resume_text, cnx):
     except errors:
         print('Data insertion error for user ', user_login)
 
+# получить текст резюме
+def get_resume(user_id, resume_id, cnx):
+    get_resume_query = """
+    SELECT id, resume_title, resume_text
+    FROM resumes
+    WHERE (user_id = %s) AND (id = %s)
+    """
+    val_tuple = (
+        user_id,
+        resume_id
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(get_resume_query, val_tuple)
+            result = cursor.fetchall()
+            return len(result), result
+    except errors:
+        print('Data receiving error for resume!')
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
 db_user = os.getenv("MYSQL_USER", "root")
@@ -67,9 +85,10 @@ try:
         user_id = user_add(user_login, user_pwd, connection)
         if user_id == None:
             sys.exit(1)
-        else: 
-            print("User added, ID =", user_id)
-            
+        else:
+            for row in data:
+                print (row)
+
         resume_title = input("Enter resume title: ")
         resume_text = input("Enter resume text: ")
         row_count, resume_id = create_resume(user_id, resume_title, resume_text, connection)
