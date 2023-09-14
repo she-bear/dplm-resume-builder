@@ -22,8 +22,8 @@ def user_add(user_login, user_pwd, cnx):
             cnx.commit()
             # получить ID пользователя
             return cursor.lastrowid
-    except errors.IntegrityError:
-        print('Duplicate entry ', user_login)
+    except errors.Error as err:
+        print('Data insertion error for user ', user_login, '\n', err)
 
 
 # создать резюме
@@ -44,8 +44,8 @@ def create_resume(user_id, resume_title, resume_text, cnx):
             cnx.commit()
             # получить маркер успешности операции
             return cursor.lastrowid
-    except errors.Error:
-        print('Data insertion error for user ', user_login)
+    except errors.Error as err:
+        print('Data insertion error, resume for user ', user_login, '\n', err)
 
 # получить текст резюме
 def get_resume(user_id, resume_id, cnx):
@@ -63,8 +63,8 @@ def get_resume(user_id, resume_id, cnx):
             cursor.execute(get_resume_query, val_tuple)
             result = cursor.fetchall()
             return result
-    except errors.Error:
-        print('Data receiving error for resume!')
+    except errors.Error as err:
+        print('Data receiving error for resume!', '\n', err)
 
 # получить все резюме пользователя
 def get_resume_list(user_id, cnx):
@@ -81,8 +81,8 @@ def get_resume_list(user_id, cnx):
             cursor.execute(get_resume_list_query, val_tuple)
             result = cursor.fetchall()
             return result
-    except errors.Error:
-        print('Data receiving error for resume list!')
+    except errors.Error as err:
+        print('Data receiving error for resume list!', '\n', err)
 
 # удалить все резюме пользователя
 def delete_resume_list(user_id, cnx):
@@ -99,8 +99,8 @@ def delete_resume_list(user_id, cnx):
             cursor.execute(delete_resume_list_query, val_tuple)
             cnx.commit()
             return cursor.rowcount
-    except errors.Error:
-        print('Data deleting error for resume list!')
+    except errors.Error as err:
+        print('Data deleting error for resume list!', '\n', err)
 
 # удалить пользователя
 def delete_user(user_id, cnx):
@@ -117,8 +117,8 @@ def delete_user(user_id, cnx):
             cursor.execute(delete_user_query, val_tuple)
             cnx.commit()
             return cursor.rowcount
-    except errors.Error:
-        print('User deletion error, ID =', user_id)
+    except errors.Error as err:
+        print('User deletion error, ID =', user_id, '\n', err)
 
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
@@ -185,5 +185,5 @@ try:
         else:
             print("User ID =", user_id, "deleted!")
   
-except errors.DatabaseError:
-    print('Cannot connect to MySQL server')
+except errors.Error as err:
+    print('Cannot connect to MySQL server', '\n', err)
