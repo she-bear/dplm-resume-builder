@@ -44,7 +44,7 @@ def create_resume(user_id, resume_title, resume_text, cnx):
             cnx.commit()
             # получить маркер успешности операции
             return cursor.rowcount, cursor.lastrowid
-    except errors:
+    except errors.Error:
         print('Data insertion error for user ', user_login)
 
 # получить текст резюме
@@ -63,7 +63,7 @@ def get_resume(user_id, resume_id, cnx):
             cursor.execute(get_resume_query, val_tuple)
             result = cursor.fetchall()
             return len(result), result
-    except errors:
+    except errors.Error:
         print('Data receiving error for resume!')
 
 # получить все резюме пользователя
@@ -81,7 +81,7 @@ def get_resume_list(user_id, cnx):
             cursor.execute(get_resume_list_query, val_tuple)
             result = cursor.fetchall()
             return len(result), result
-    except errors:
+    except errors.Error:
         print('Data receiving error for resume list!')
 
 # удалить все резюме пользователя
@@ -99,7 +99,7 @@ def delete_resume_list(user_id, cnx):
             cursor.execute(delete_resume_list_query, val_tuple)
             cnx.commit()
             return cursor.rowcount
-    except errors:
+    except errors.Error:
         print('Data deleting error for resume list!')
 
 # удалить пользователя
@@ -117,7 +117,7 @@ def delete_user(user_id, cnx):
             cursor.execute(delete_user_query, val_tuple)
             cnx.commit()
             return cursor.rowcount
-    except errors:
+    except errors.Error:
         print('User deletion error, ID =', user_id)
 
 
