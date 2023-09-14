@@ -84,6 +84,24 @@ def get_resume_list(user_id, cnx):
     except errors:
         print('Data receiving error for resume list!')
 
+# удалить все резюме пользователя
+def delete_resume_list(user_id, cnx):
+    delete_resume_list_query = """
+    DELETE
+    FROM resumes
+    WHERE (user_id=%s)
+    """
+    val_tuple = (
+        user_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(delete_resume_list_query, val_tuple)
+            cnx.commit()
+            return cursor.rowcount
+    except errors:
+        print('Data deleting error for resume list!')
+
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
 db_user = os.getenv("MYSQL_USER", "root")
@@ -131,6 +149,13 @@ try:
         else:
             for row in data:
                 print (row)
+
+        row_count = delete_resume_list(user_id, connection)
+        print(row_count)
+        if row_count == 0:
+            print("There aren't resume for user ID =", user_id)
+        else: 
+            print("Resumes deleted, count = ", row_count)
   
 except errors.DatabaseError:
     print('Cannot connect to MySQL server')
