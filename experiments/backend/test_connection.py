@@ -102,6 +102,24 @@ def delete_resume_list(user_id, cnx):
     except errors:
         print('Data deleting error for resume list!')
 
+# удалить пользователя
+def delete_user(user_id, cnx):
+    delete_user_query = """
+    DELETE
+    FROM users
+    WHERE (id=%s)
+    """
+    val_tuple = (
+        user_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(delete_user_query, val_tuple)
+            cnx.commit()
+            return cursor.rowcount
+    except errors:
+        print('User deletion error, ID =', user_id)
+
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
 db_user = os.getenv("MYSQL_USER", "root")
@@ -122,10 +140,9 @@ try:
         user_id = user_add(user_login, user_pwd, connection)
         if user_id == None:
             sys.exit(1)
-        else:
-            for row in data:
-                print (row)
-
+        else: 
+            print("User added, ID =", user_id)
+            
         resume_title = input("Enter resume title: ")
         resume_text = input("Enter resume text: ")
         row_count, resume_id = create_resume(user_id, resume_title, resume_text, connection)
@@ -142,7 +159,7 @@ try:
             for row in data:
                 print (row)
 
-        row_count, data = get_resume_list(32, connection)
+        row_count, data = get_resume_list(user_id, connection)
         if row_count == 0:
             print('Cannot recieve resume data!')
             sys.exit(1)
@@ -156,6 +173,12 @@ try:
             print("There aren't resume for user ID =", user_id)
         else: 
             print("Resumes deleted, count = ", row_count)
+
+        row_count = delete_user(user_id, connection)
+        if row_count == 0:
+            print("There is't user ID =", user_id)
+        else:
+            print("User ID =", user_id, "deleted!")
   
 except errors.DatabaseError:
     print('Cannot connect to MySQL server')
