@@ -4,7 +4,7 @@ from mysql.connector import connect, errors
 import os
 import sys
 
-# запрос на добавление пользователя
+# запрос на добавление пользователя (вернет int в случае успеха и None, если exception)
 def user_add(user_login, user_pwd, cnx):
     
     insert_user_query = """
@@ -43,7 +43,7 @@ def create_resume(user_id, resume_title, resume_text, cnx):
             cursor.execute(create_resume_query, val_tuple)
             cnx.commit()
             # получить маркер успешности операции
-            return cursor.rowcount, cursor.lastrowid
+            return cursor.lastrowid
     except errors.Error:
         print('Data insertion error for user ', user_login)
 
@@ -62,7 +62,7 @@ def get_resume(user_id, resume_id, cnx):
         with cnx.cursor() as cursor:
             cursor.execute(get_resume_query, val_tuple)
             result = cursor.fetchall()
-            return len(result), result
+            return result
     except errors.Error:
         print('Data receiving error for resume!')
 
@@ -80,7 +80,7 @@ def get_resume_list(user_id, cnx):
         with cnx.cursor() as cursor:
             cursor.execute(get_resume_list_query, val_tuple)
             result = cursor.fetchall()
-            return len(result), result
+            return result
     except errors.Error:
         print('Data receiving error for resume list!')
 
@@ -145,38 +145,43 @@ try:
             
         resume_title = input("Enter resume title: ")
         resume_text = input("Enter resume text: ")
-        row_count, resume_id = create_resume(user_id, resume_title, resume_text, connection)
-        if row_count == None:
+        resume_id = create_resume(user_id, resume_title, resume_text, connection)
+        if resume_id == None:
             sys.exit(1)
         else: 
             print("Resume added, ID = ", resume_id)
 
-        row_count, data = get_resume(user_id, resume_id, connection)
-        if row_count == 0:
-            print('Cannot recieve resume data!')
+        data = get_resume(user_id, resume_id, connection)
+        if data == None:
             sys.exit(1)
+        elif len(data) == 0:
+            print('Cannot recieve any resume data!')
         else:
             for row in data:
                 print (row)
 
-        row_count, data = get_resume_list(user_id, connection)
-        if row_count == 0:
-            print('Cannot recieve resume data!')
+        data = get_resume_list(user_id, connection)
+        if data == None:
             sys.exit(1)
+        elif len(data) == 0: 
+            print('Cannot recieve any resume data!')
         else:
             for row in data:
                 print (row)
 
         row_count = delete_resume_list(user_id, connection)
-        print(row_count)
-        if row_count == 0:
+        if row_count == None:
+            sys.exit(1)
+        elif row_count == 0:
             print("There aren't resume for user ID =", user_id)
         else: 
             print("Resumes deleted, count = ", row_count)
 
         row_count = delete_user(user_id, connection)
-        if row_count == 0:
-            print("There is't user ID =", user_id)
+        if row_count == None:
+            sys.exit(1)
+        elif row_count == 0:
+            print("There isn't user ID =", user_id)
         else:
             print("User ID =", user_id, "deleted!")
   
