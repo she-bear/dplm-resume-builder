@@ -44,7 +44,7 @@ def create_resume(user_id, resume_title, resume_text, cnx):
             cursor.execute(create_resume_query, val_tuple)
             cnx.commit()
             # получить маркер успешности операции
-            return cursor.rowcount
+            return cursor.rowcount, cursor.lastrowid
     # нужно ли здесь обрабатывать все возможные ошибки при вставке данных?
     except errors:
         print('Data insertion error for user ', user_login)
@@ -70,14 +70,14 @@ try:
         if user_id == None:
             sys.exit(1)
         else: 
-            print("User added, ID=", user_id)
+            print("User added, ID =", user_id)
             
         resume_title = input("Enter resume title: ")
         resume_text = input("Enter resume text: ")
-        row_count = create_resume(user_id, resume_title, resume_text, connection)
+        row_count, resume_id = create_resume(user_id, resume_title, resume_text, connection)
         if row_count == None:
             sys.exit(1)
         else: 
-            print("Resume added, row = ", row_count)
+            print("Resume added, ID = ", resume_id)
 except errors.DatabaseError:
     print('Cannot connect to MySQL server')
