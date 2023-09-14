@@ -22,7 +22,6 @@ def user_add(user_login, user_pwd, cnx):
             cnx.commit()
             # получить ID пользователя
             return cursor.lastrowid
-    # нужно ли здесь обрабатывать все возможные ошибки при вставке данных?
     except errors.IntegrityError:
         print('Duplicate entry ', user_login)
 
@@ -45,7 +44,6 @@ def create_resume(user_id, resume_title, resume_text, cnx):
             cnx.commit()
             # получить маркер успешности операции
             return cursor.rowcount, cursor.lastrowid
-    # нужно ли здесь обрабатывать все возможные ошибки при вставке данных?
     except errors:
         print('Data insertion error for user ', user_login)
 
