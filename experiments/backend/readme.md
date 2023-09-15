@@ -101,6 +101,16 @@ python experiments/backend/test_connection.py
 ```
 ![](figures/cline_fig.png)
 
+### Настройка виртуального окружения через Command Palette VSCode
+
+Для проведения эксперимента нужно удалить текущее виртуальное окружение(папку .venv) и иметь файл requirements.txt с нужными зависимостями.
+
+Ctrl + Shift + P (меню View -> Command Palette) -> Create Environment.
+Предложит выбрать файл зависимостей:
+![](figures/env_fig.png)
+
+Будет создано новое виртуальное окружение и интерпретатор для py-файлов подключится автоматически.
+
 ## Ошибки
 
 DatabaseError - Can't connect to MySQL server
