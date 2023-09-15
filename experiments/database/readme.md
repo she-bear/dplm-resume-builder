@@ -227,12 +227,10 @@ r-entrypoint-initdb.d/db_init.sql -d -p 3306:3306 mysql
 
 На данном этапе работы команда создания контейнера будет выглядеть следующим образом:
 ```
-docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docke
-r-entrypoint-initdb.d/db_init.sql -v resume-builder-volume:/var/lib/mysql -d -p 3306:3306 mysql
+docker run --name=mysql --env-file experiments/database/mysql.env -v ${PWD}/experiments/database/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql -v resume-builder-volume:/var/lib/mysql -d -p 3306:3306 mysql
 ```
 
 ## Файл инициализации БД (минимальный)
-
 Для инициализации БД будем использовать файл db_init.sql
 
 ```
@@ -321,4 +319,38 @@ WHERE (user_id=current_user) AND (id=resume_id);
 SELECT id, resume_title
 FROM resumes
 WHERE (user_id=current_user);
+```
+
+## Реализация каскадного удаления
+
+Каскадное удаление в базах данных - это процесс, при котором удаляются связанные записи из других таблиц при удалении основной записи.
+Реализуется с помощью механизма внешних ключей, который позволяет контролировать ссылочную целостность между таблицами.
+
+В данной БД есть две таблицы - users (Пользователи) и resumes (Резюме), и одна запись пользователя может быть связана с несколькими резюме. При удалении пользователя из таблицы users **автоматически удаляются все связанные записи** этого пользователя из таблицы resumes.
+
+Для реализации каскадного удаления в связанную таблицу необходимо добавить директиву:
+```
+ON DELETE CASCADE
+```
+
+Таким образом, на данном этапе работы файл инициализации БД db_init.sql будет иметь вид:
+```
+USE resume;
+
+CREATE TABLE IF NOT EXISTS users(
+    id int NOT NULL AUTO_INCREMENT,
+    login varchar(255) UNIQUE NOT NULL,
+    password varchar(255) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS resumes(
+    id int NOT NULL AUTO_INCREMENT,
+    user_id int NOT NULL,
+    resume_title VARCHAR(100),
+    resume_text TEXT,
+    PRIMARY KEY(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);
 ```

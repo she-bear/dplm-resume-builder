@@ -14,4 +14,5 @@ CREATE TABLE IF NOT EXISTS resumes(
     resume_text TEXT,
     PRIMARY KEY(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 );
