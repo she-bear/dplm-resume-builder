@@ -185,3 +185,13 @@ pip install -r requirements.txt
 В данном проекте для хэширования паролей будет использоваться библиотека [passlib](https://passlib.readthedocs.io/en/stable/#)
 
 В примере видно, что, повторное хэширование одного и того же пароля дает разный результат.
+
+## Markdown
+[Документация](https://python-markdown.github.io/reference/)
+
+Для конвертации таблиц нужно использовать расширение:
+```
+table_html=markdown.markdown(table_md, extensions=['markdown.extensions.tables'])
+```
+
+[Список доступных расширений](https://python-markdown.github.io/extensions/)
