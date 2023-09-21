@@ -16,3 +16,13 @@ def login():
         return "POST request"
     else:
         return "GET request"
+
+# получение любого аргумента из запроса, который идет после /url?<аргумент>    
+@app.route('/url')
+def get_query_string():
+    return request.query_string
+
+# получение целочисленного аргумента из запроса вида /url/<число>
+@app.route('/url/<int:id>')
+def show_id(id):
+    return f'ID = {id}'
