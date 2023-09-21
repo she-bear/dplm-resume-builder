@@ -195,3 +195,17 @@ table_html=markdown.markdown(table_md, extensions=['markdown.extensions.tables']
 ```
 
 [Список доступных расширений](https://python-markdown.github.io/extensions/)
+
+## Flask
+
+Установка и начало работы, см. [документацию](https://learn.microsoft.com/ru-ru/windows/python/web-frameworks#hello-world-tutorial-for-flask)
+
+Запуск программы (терминал - текущая папка):
+```
+flask --app <имя_файла> run
+```
+
+Запуск с отладкой (не надо перезапускать при внесении изменений):
+```
+flask --app <имя_файла> run --debug
+```
