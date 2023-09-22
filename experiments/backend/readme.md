@@ -472,3 +472,47 @@ Stateless запросы - это запросы, которые не храня
 В нашем случае:
 * объект UserSession будет создан заново при каждом запросе
 * информация о cookies шифруется секретным ключом и хранится на стороне пользователя
+
+
+## Команды httpie для выполнения запросов
+
+Для вывода подробной информации о запросе и ответе используется флаг -v. 
+
+route /
+```
+http  GET http://127.0.0.1:5000/
+```
+
+route /json
+```
+http  GET http://127.0.0.1:5000/json
+```
+
+route /req
+```
+http GET http://127.0.0.1:5000/req
+http POST http://127.0.0.1:5000/req
+```
+
+route /url
+```
+http GET  http://127.0.0.1:5000/url?string
+http GET  http://127.0.0.1:5000/url/123
+```
+
+route /login
+```
+http -v --session=my_test_session POST http://127.0.0.1:5000/login user=username password=secret
+
+http -v --session=my_test_session GET http://127.0.0.1:5000/login
+```
+
+route /status
+```
+http -v --session=my_test_session GET http://127.0.0.1:5000/status
+```
+
+route /logout
+```
+http -v --session=my_test_session GET http://127.0.0.1:5000/logout
+```
