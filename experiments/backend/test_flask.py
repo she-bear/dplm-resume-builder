@@ -1,4 +1,6 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
+from flask_login import LoginManager
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -26,3 +28,13 @@ def get_query_string():
 @app.route('/url/<int:id>')
 def show_id(id):
     return f'ID = {id}'
+
+login_manager = LoginManager()
+
+# получение логина и пароля
+@app.route('/login', methods=['POST', 'GET'])
+def get_user_login():
+    if request.method == 'POST':
+        user = request.form.get('user')
+        password = request.form.get('password')
+        return f'User = {user}, password = {password}'
