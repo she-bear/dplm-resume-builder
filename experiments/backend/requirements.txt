@@ -3,3 +3,4 @@ passlib
 markdown
 flask
 flask-login
+Jinja2
