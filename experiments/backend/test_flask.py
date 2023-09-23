@@ -66,7 +66,8 @@ def login():
     else:
         return "GET request"
 
-# получение любого аргумента из запроса, который идет после /url?<аргумент>    
+# получение любого аргумента из запроса, который идет после /url?<аргумент>
+# получить конкретный парамтер - request.args.get("name")   
 @app.route('/url')
 def get_query_string():
     return request.query_string
