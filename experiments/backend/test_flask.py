@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user
 
 # При наследовании от flask_login.UserMixin получаем доступ к методам и атрибутам, которые связаны с аутентификацией и авторизацией пользователей.
@@ -84,3 +84,8 @@ def get_user_login():
         user = request.form.get('user')
         password = request.form.get('password')
         return f'User = {user}, password = {password}'
+    
+# работа с шаблонами
+@app.route('/template/<int:id>')
+def get_user_page(id):
+    return render_template("welcome.html", id = id)
