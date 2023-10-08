@@ -1,9 +1,11 @@
+## Структура шаблонов
+
 base.html:
 * html
     * head
     * body
         * header
-        * content <- index.html, list.html, resume.html
+        * content <- index.html, list.html, resume.html и т.д.
         * footer
     
 ## Список всех страниц, с описанием и списком параметров
@@ -100,3 +102,8 @@ Login для доступа: нужен
 7. Просмотр готового резюме по ссылке
 
 ???
+
+## Запуск flask
+```
+flask --app app.py run
+```
