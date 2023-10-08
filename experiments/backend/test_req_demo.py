@@ -10,8 +10,8 @@ def home():
 
 # здесь можно задать значения по умолчанию
 # но нужно преобразование в int и проверка типов
-# запрос вида http://127.0.0.1:5000/four?param1=2&param2=10
-@app.route("/four")
+# запрос вида http://127.0.0.1:5000/get_param?param1=2&param2=10
+@app.route("/get_param")
 def get_param():
   param1 = request.args.get("param1", 0)
   param2 = request.args.get("param2", 0)
