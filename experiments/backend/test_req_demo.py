@@ -18,9 +18,9 @@ def get_param():
 
   return f"param1: {param1}, param2: {param2}"
 
-# в этом способе невозможно указать значения по умолчанию,
-# должны присутствовать два параметра всегда
-# запрос вида http://127.0.0.1:5000/url/2&10
-@app.route('/url/<int:param1>&<int:param2>')
+# для второго параметра задано значение по умолчанию
+# запрос вида http://127.0.0.1:5000/url/2_10
+@app.route('/url/<int:param1>',  defaults={'param2': 0})
+@app.route('/url/<int:param1>_<int:param2>')
 def show_id(param1, param2):
     return f"ID = {param1}, ID = {param2}"
