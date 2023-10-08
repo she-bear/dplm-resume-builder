@@ -1,6 +1,6 @@
 # передать данные param1=value1 param2=value2 четырьмя способами
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
@@ -24,3 +24,14 @@ def get_param():
 @app.route('/url/<int:param1>_<int:param2>')
 def show_id(param1, param2):
     return f"ID = {param1}, ID = {param2}"
+
+# post form
+@app.route('/post_form', methods=['post', 'get'])
+def login():
+    message = ''
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        message = f'Hello, {username} with password={password}!'
+   
+    return render_template('login.html', message = message)
