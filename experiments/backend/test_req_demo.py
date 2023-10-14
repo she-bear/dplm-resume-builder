@@ -9,13 +9,14 @@ def home():
     return "Hello World!"
 
 # здесь можно задать значения по умолчанию
-# но нужно преобразование в int и проверка типов
+# ожидаемый тип данных указывается в request.args.get
+# https://werkzeug.palletsprojects.com/en/3.0.x/datastructures/#werkzeug.datastructures.MultiDict.get
 # запрос вида http://127.0.0.1:5000/get_param?param1=2&param2=10
 # тип передачи параметров: query
 @app.route("/get_param")
 def get_param():
-  param1 = request.args.get("param1", 0)
-  param2 = request.args.get("param2", 0)
+  param1 = request.args.get("param1", 0, int)
+  param2 = request.args.get("param2", 0, int)
 
   return f"param1: {param1}, param2: {param2}"
 
@@ -33,8 +34,8 @@ def show_id(param1, param2):
 def login():
     message = ''
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = request.form.get('username', '', str)
+        password = request.form.get('password', '', str)
         message = f'Hello, {username} with password={password}!'
    
     return render_template('login.html', message = message)
@@ -53,8 +54,8 @@ def login():
 @app.route('/post_json',  methods=['post', 'get'])
 def post_json():
     if request.method == 'POST':
-        username = request.json.get('username')
-        password = request.json.get('password')
+        username = request.json.get('username', '', str)
+        password = request.json.get('password', '', str)
         message = f'Hello, {username} with password={password}!'
         return {"message" : message}
     
