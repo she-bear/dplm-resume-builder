@@ -538,11 +538,119 @@ XSS (Cross-site scripting) - это тип уязвимости безопасн
 
 test_req_demo.py
 
-4. Передача двух параметров через url
+1. Передача двух параметров через url
 
+В HTTP-запросах параметры могут передаваться двумя способами: через путь (path) или через запрос (query).
+Значения параметров должны быть URL-encoded, чтобы избежать проблем с пробелами, специальными символами и т.д. URL-encoded заменяет специальные символы на соответствующие им escape-последовательности. Например, пробел заменяется на %20, а символ амперсанда (&) заменяется на %26.
+
+[URL Decode and Encode](https://www.urlencoder.org/)
+
+Тип передачи параметров: query
 ```
-http -v GET "http://127.0.0.1:5000/four?param1=2&param2=10"
+http -v GET "http://127.0.0.1:5000/get_param?param1=2&param2=10"
 ```
+
+Из расшифровки запроса видно, что параметры ушли в заголовке (после GET):
+```
+GET /get_param?param1=2&param2=10 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: 127.0.0.1:5000
+User-Agent: HTTPie/2.6.0
+```
+
+Тип передачи параметров: path
 ```
 http -v GET http://127.0.0.1:5000/url/2_10
 ```
+
+Из расшифровки запроса видно, что параметры ушли в заголовке (после GET):
+```
+GET /url/2_10 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: 127.0.0.1:5000
+User-Agent: HTTPie/2.6.0
+```
+
+2. Передача параметров через post form
+
+Передача параметров через POST форму в HTML осуществляется с помощью полей формы. В теле формы указываются имена и значения параметров, которые нужно передать на сервер. При отправке формы браузер формирует запрос с параметрами в теле запроса.
+
+Например:
+```
+<form action="" method="post">
+    <p>
+        <label for="username">Username</label>
+        <input type="text" name="username">
+    </p>
+    <p>
+        <label for="password">Password</label>
+        <input type="password" name="password">
+    </p>
+    <p>
+        <input type="submit">
+    </p>
+</form>    
+```
+
+**В httpie такие запросы отправляются с флагом -f:**
+```
+http -v -f POST http://127.0.0.1:5000/post_form username=olgaK password=123
+```
+
+Из расшифровки запроса видно, что параметры ушли в ТЕЛЕ ЗАПРОСА и **Content-Type = application/x-www-form-urlencoded**:
+```
+POST /post_form HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded; charset=utf-8
+Host: 127.0.0.1:5000
+User-Agent: HTTPie/2.6.0
+
+username=olgaK&password=123
+```
+
+3. Передача параметров через post json
+
+Передача JSON в HTML-запросе означает передачу данных в формате JavaScript Object Notation (JSON) через гипертекстовую передачу (HTTP) в качестве дополнительного параметра к запросу. Это может быть полезно для передачи структурированных данных, таких как объекты, списки или сложные структуры, между веб-страницами или веб-сервисами.
+
+При использовании JSON в HTTP-запросах, данные передаются в виде строки, которая затем может быть проанализирована на стороне сервера или клиента с помощью соответствующего парсера JSON. Это позволяет обмениваться данными в формате, который легко читается и анализируется программами, и который широко поддерживается различными языками программирования и платформами.
+
+**В httpie такие запросы отправляются с флагом -j:**
+
+```
+http -v -j POST http://127.0.0.1:5000/post_json username=olgaK password=123
+```
+
+Из расшифровки запроса видно, что параметры ушли в ТЕЛЕ ЗАПРОСА и **Content-Type = application/json**:
+
+```
+POST /post_json HTTP/1.1
+Accept: application/json, */*;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Length: 40
+Content-Type: application/json
+Host: 127.0.0.1:5000
+User-Agent: HTTPie/2.6.0
+
+{
+    "password": "123",
+    "username": "olgaK"
+}
+```
+
+> ВАЖНО ИМЕТЬ ВВИДУ, что количество, тип и название параметров запроса ЗАРАНЕЕ фиксируется в документации на API.
+
+Например, если в запросе:
+```
+http -v -j POST http://127.0.0.1:5000/post_json username=olgaK password=123
+```
+одному из аргументов указать другое имя, то на стороне backend он НЕ БУДЕТ принят и проанализирован.
+
+[Пример документации на API GitTea](https://try.gitea.io/api/swagger#/admin/adminCreateOrg)
