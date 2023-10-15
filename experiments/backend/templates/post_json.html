@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Json</title>
+
+</head>
+
+<body>
+    <h1>Post JSON</h1>
+    <script>
+        async function getUserData() {
+            const response = await fetch('/post_json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ "username": "ivan", "password": "123" })
+            });
+
+            if (response.ok) {
+                const rawUser = await response.json();
+                console.log(rawUser.message);
+            }
+        }
+
+        getUserData();
+    </script>
+</body>
+
+</html>
