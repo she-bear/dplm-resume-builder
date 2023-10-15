@@ -54,6 +54,8 @@ def login():
 @app.route('/post_json',  methods=['post', 'get'])
 def post_json():
     if request.method == 'POST':
+        # Значение по умолчанию можно не указывать (если устраивает None)
+        # и указать так: username = request.json.get('username', type=str)
         username = request.json.get('username', '', str)
         password = request.json.get('password', '', str)
         message = f'Hello, {username} with password={password}!'
