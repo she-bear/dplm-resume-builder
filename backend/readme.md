@@ -7,26 +7,18 @@ base.html:
         * header
         * content <- index.html, list.html, resume.html и т.д.
         * footer
-    
-## Список всех страниц, с описанием и списком параметров
 
-* URL
-* Тип запроса GET/POST
-* Список параметров
-* Тип параметра (url или form)
-* Нужен ли login для доступа (к конкретной странице)
-* Имя html шаблона
+## Список всех страниц, с описанием и списком параметров
 
 1. Главная страница
 "/"
 
-GET
-
-<без параметров>
-
-URL
-
-Login для доступа: не нужен
+```
+запрос: GET
+параметры: без параметров
+ответ: html
+login для доступа: не нужен
+```
 
 Шаблон: index.html
 
@@ -34,74 +26,131 @@ Login для доступа: не нужен
 2. Страница регистрации
 "/registration"
 
-POST
+```
+запрос: GET
+параметры: -
+ответ: html
+login для доступа: не нужен
+```
 
-<login, password>
+```
+запрос: POST form
+параметры (body):
+            login: string
+            password: string
+ответ:
+            html (redirect?),
+            message (ok, error)
 
-FORM
-
-Login для доступа: не нужен
+login для доступа: не нужен
+```
 
 Шаблон: registration.html
 
 3. Страница входа
 "/login"
 
-POST
+```
+запрос: GET
+параметры: -
+ответ: html
+login для доступа: не нужен
+```
 
-<login, password>
+```
+запрос: POST form
+параметры (body):
+            login: string
+            password: string
+ответ:
+        html (redirect???)
+        message (ok, error)
 
-FORM
-
-Login для доступа: не нужен
+login для доступа: не нужен (???)
+```
 
 Шаблон: login.html
 
 4. Создание резюме
-"/create"
+"/resume/create"
 
-POST
+```
+запрос: GET
+параметры: -
+ответ: html
+```
 
-<user_id, resume_title, resume_text>
+```
+запрос: POST form
+параметры (body):
+            resume_title: string
+            resume_text: string (markdown_string)
+ответ:
+            message (ok, error)
 
-FORM
+login для доступа: нужен
+```
 
-Login для доступа: нужен
+Шаблон: resume.html
 
-Шаблон: create.html
+5. Просмотр списка резюме
+"/resume/list"
 
-
-5. Редактирование резюме
-"/edit"
-
-POST
-
-<user_id, resume_id, resume_title, resume_text>
-
-FORM
-
-Login для доступа: нужен
-
-Шаблон: edit.html
-
-
-6. Просмотр списка резюме
-"/list"
-
-GET
-
-<user_id>
-
-URL
-
-Login для доступа: нужен
+```
+запрос: GET
+параметры: -
+login для доступа: нужен
+ответ: html
+login для доступа: нужен
+```
 
 Шаблон: list.html
 
+6. Просмотр резюме
+"/resume/view/<id:int>"
 
-7. Просмотр готового резюме по ссылке
+```
+запрос: GET
+параметры (path):
+                id: int
+ответ: html
+login для доступа: нужен
+```
 
-???
+Шаблон: view.html
+
+7. Редактирование резюме
+"/resume/edit/<id:int>"
+
+```
+запрос: GET
+параметры (path):
+                id: int
+ответ: html
+```
+
+```
+запрос: POST form
+параметры (body):
+            resume_title: string
+            resume_text: string (markdown_string)
+ответ:
+            message (ok, error)
+
+login для доступа: нужен            
+```
+
+Шаблон: resume.html
+
+8. Просмотр готового резюме по ссылке
+
+```
+запрос: GET
+параметры: ???
+ответ: html
+```
+
+Шаблон: view.html (???)
 
 ## Запуск flask
 ```
