@@ -15,7 +15,7 @@ base.html:
 
 ```
 запрос: GET
-параметры: без параметров
+параметры: -
 ответ: html
 login для доступа: не нужен
 ```
@@ -99,7 +99,6 @@ login для доступа: нужен
 ```
 запрос: GET
 параметры: -
-login для доступа: нужен
 ответ: html
 login для доступа: нужен
 ```
@@ -131,6 +130,8 @@ login для доступа: нужен
 
 ```
 запрос: POST form
+параметры (path):
+                id: int
 параметры (body):
             resume_title: string
             resume_text: string (markdown_string)
