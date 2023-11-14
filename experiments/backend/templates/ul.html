@@ -1,0 +1,6 @@
+<ul id="todo_list">
+    {% for item in data %}
+    <li>{{ item.title }} <button hx-delete="/delete/{{ item.id }}" hx-target="#todo_list"
+            hx-swap="outerHTML">Delete</button> {{ item.done }}</li>
+    {% endfor %}
+</ul>
