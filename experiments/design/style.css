@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.center {
+    padding-left: calc(50% - 570px);
+    padding-right: calc(50% - 570px);
+}
+
+.header {
+    padding-top: 45px;
+    padding-bottom: 45px;
+    display: flex;
+    justify-content: space-between;
+    background: #FAFAFA;
+}
+
+.logo {
+    color: #233142;;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.header__right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header__link {
+    color: #233142;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.header__button {
+    border-radius: 10px;
+    border: 1px solid #EAEAEA;
+    background: #377DFF;
+    box-shadow: 0px 10px 40px 0px rgba(174, 174, 174, 0.20);
+    color: #FFF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 10px 25px;
+}
+
+.login, .list, .edit, .public {
+    display: flex;
+    justify-content: center;
+    padding-top: 45px;
+    padding-bottom: 45px;
+}
+
+.login__content {
+    width: 550px;
+    border-radius: 26px;
+    border: 1px solid #D6D6D6;
+    background: #FFF;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login__title {
+    color: #000;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.login__subtitle {
+    color: #000;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 45px;
+}
+
+
+.login__input {
+    height: 65px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 10px;
+    border: 1px solid #EAEAEA;
+    background: #FFF;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.login__input::placeholder {
+    color: #B0A9A9;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.login__input:focus {
+    box-shadow: 0px 10px 40px 0px rgba(174, 174, 174, 0.20);
+}
+
+.login__button {
+    border-radius: 10px;
+    border: 1px solid #EAEAEA;
+    background: #377DFF;
+    box-shadow: 0px 10px 40px 0px rgba(174, 174, 174, 0.20);
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.login__bottom {
+    text-align: center;
+}
+
+.login__text {
+    color: #333;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.login__link {
+    color: #333;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.list__content {
+    width: 100%;
+    border-radius: 26px;
+    border: 1px solid #D6D6D6;
+    background: #FFF;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Clearing Floats */
+/* На основе: https://codepen.io/NoorA1125/pen/movOEN */
+.clearf:before, .clearf:after {
+    content: "";
+    display: table;
+}
+
+.clearf:after {
+    clear: both;
+}
+
+.clearf {
+    zoom: 1;
+}
+
+.list__item {
+    width: 600px;
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #EAEAEA;
+    background: transparent;
+}
+
+.list__item input {
+    width: 480px;
+    box-shadow: none;
+    height: 65px;
+    padding-left: 25px;
+    padding-right: 25px;
+    float: left;   
+
+    color: #333;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    border: 0;
+    background: #fff;
+    border-radius: 40px;
+    border-top-style: none;
+}
+
+.list__item input:focus {
+    outline: 0;
+    background: #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,0.8) inset;
+}
+
+.list__item button {
+    overflow: visible;
+    position: relative;
+    float: right;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    margin: 10px 10px 10px 0;
+    border-radius: 10px;
+    height: 45px;
+    width: 110px;
+    
+    color: #fff;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #377DFF; 
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+}  
+
+.list__item .button-web {
+    background: #233142;
+}
+
+/* Придумать потом */
+/* .list__item button:hover{    
+    background: #e54040;
+}  
+
+.list__item button:active,
+.list__item button:focus{  
+    background: #198cff;
+    outline: 0;  
+} */
+
+.list__button {
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    margin: 10px 10px 10px 0;
+    border-radius: 10px;
+    height: 45px;
+    width: 145px;
+    
+    color: #fff;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #377DFF; 
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+}
+
+.edit__content, .public__content {
+    width: 100%;
+    border-radius: 26px;
+    border: 1px solid #D6D6D6;
+    background: #FFF;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit__title {
+    color: #333;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.edit__input {
+    height: 65px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 10px;
+    border: 1px solid #EAEAEA;
+    background: #FFF;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.edit__input:focus {
+    box-shadow: 0px 10px 40px 0px rgba(174, 174, 174, 0.20);
+}
+
+.edit__text {
+    height: 500px;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #EAEAEA;
+    background: #FFF;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.edit__buttons .button-del {
+    background: #b03c3c;
+}
+
+.public__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.public__title {
+    color: #333;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.public__text {
+    color: #333;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
