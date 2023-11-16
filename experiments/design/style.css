@@ -61,7 +61,7 @@ body {
     padding: 10px 25px;
 }
 
-.login, .list, .edit {
+.login, .list, .edit, .public {
     display: flex;
     justify-content: center;
     padding-top: 45px;
@@ -277,7 +277,7 @@ body {
     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
 }
 
-.edit__content {
+.edit__content, .public__content {
     width: 100%;
     border-radius: 26px;
     border: 1px solid #D6D6D6;
@@ -333,4 +333,28 @@ body {
 
 .edit__buttons .button-del {
     background: #b03c3c;
+}
+
+.public__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.public__title {
+    color: #333;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.public__text {
+    color: #333;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
