@@ -30,7 +30,7 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 # Ключ шифрования cookies
-app.secret_key = 'secret key'
+app.secret_key = os.getenv("SECRET_KEY", "secret key")
 
 
 @login_manager.user_loader
