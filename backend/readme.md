@@ -61,7 +61,7 @@ login для доступа: не нужен
 ```
 запрос: POST form
 параметры (body):
-            login: string
+            username: string
             password: string
 ответ:
         html (redirect???)

@@ -35,6 +35,27 @@ def user_add(user_login, user_pwd, cnx):
         return None
 
 
+def user_login(user_login, cnx):
+    """ Запрос на проверку существования пользователя (вернет int в случае успеха и None, если exception)"""
+
+    get_user_query = """
+    SELECT password FROM users WHERE login=%s;
+    """
+    val_tuple = (
+        user_login,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(get_user_query, val_tuple)
+            result = cursor.fetchone()
+            if result is None:
+                return None
+            return result[0]
+    except errors.Error as err:
+        print('Data receiving error for login!', '\n', err)
+        return None
+
+
 @app.route("/register", methods=['post', 'get'])
 def register():
     """Обработка регистрации пользователя"""
@@ -64,3 +85,33 @@ def register():
         return redirect('/resume/list')
 
     return render_template("register.html")
+
+
+@app.route("/login", methods=['post', 'get'])
+def login():
+    """Обработка логина пользователя"""
+    if request.method == 'POST':
+        username = request.form.get('username', '', str)
+        password = request.form.get('password', '', str)
+        # установка соединения с БД
+        try:
+            with connect(
+                host=db_host,
+                user=db_user,
+                password=db_password,
+                database=db_name
+            ) as connection:
+                from_db_password = user_login(username, connection)
+                if from_db_password is None:
+                    return render_template("login.html", user_not_found=True)
+                print(password, from_db_password)
+                if password != from_db_password:
+                    return render_template("login.html", incorrect_password=True)
+
+        except errors.Error as err:
+            print('Cannot connect to MySQL server', '\n', err)
+            return render_template("login.html", login_error=True)
+
+        return redirect('/resume/list')
+
+    return render_template("login.html")
