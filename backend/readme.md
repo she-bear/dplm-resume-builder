@@ -24,7 +24,7 @@ login для доступа: не нужен
 
 
 2. Страница регистрации
-"/registration"
+"/register"
 
 ```
 запрос: GET
@@ -36,8 +36,9 @@ login для доступа: не нужен
 ```
 запрос: POST form
 параметры (body):
-            login: string
+            username: string
             password: string
+            password_confirm: stringlogin
 ответ:
             html (redirect?),
             message (ok, error)
@@ -60,7 +61,7 @@ login для доступа: не нужен
 ```
 запрос: POST form
 параметры (body):
-            login: string
+            username: string
             password: string
 ответ:
         html (redirect???)

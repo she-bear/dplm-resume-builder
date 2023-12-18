@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="login center">
+    <form action="/login" method="post">
+        <div class="login__content">
+            <h2 class="login__title">Login</h2>
+            <p class="login__subtitle">to get started</p>
+
+            {% if user_not_found %}
+            <div>
+                <p>User not found!</p>
+            </div>
+            {% endif %}
+
+            {% if incorrect_password %}
+            <div>
+                <p>Incorrect password!</p>
+            </div>
+            {% endif %}
+
+            {% if login_error %}
+            <div>
+                <p>Login failed!</p>
+            </div>
+            {% endif %}
+
+            <input type="text" placeholder="Username" class="login__input" name="username">
+            <input type="password" placeholder="Password" class="login__input" name="password">
+            <button class="login__button">Continue</button>
+            <div class="login__bottom">
+                <span class="login__text">New User?</span>
+                <a href="register" class="login__link">Register</a>
+            </div>
+        </div>
+    </form>
+</section>
+
+{% endblock content %}

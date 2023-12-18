@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="login center">
+    <form action="/register" method="post">
+        <div class="login__content">
+            <h2 class="login__title">Sign In</h2>
+            <p class="login__subtitle">to get started</p>
+
+            {% if password_dont_match %}
+            <div>
+                <p>Passwords don't match!</p>
+            </div>
+            {% endif %}
+
+            {% if registration_error %}
+            <div>
+                <p>Registration failed!</p>
+            </div>
+            {% endif %}
+
+            <input type="text" placeholder="Username" class="login__input" name="username">
+            <input type="password" placeholder="Password" class="login__input" name="password">
+            <input type="password" placeholder="Confirm Password" class="login__input" name="password_confirm">
+            <button class="login__button" type="submit">Continue</button>
+            <div class="login__bottom">
+                <span class="login__text">Already registered?</span>
+                <a href="login" class="login__link">Login</a>
+            </div>
+        </div>
+    </form>
+</section>
+{% endblock content %}
