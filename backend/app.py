@@ -2,7 +2,7 @@
 import os
 from mysql.connector import connect, errors
 from flask import Flask, request, render_template, redirect
-from flask_login import UserMixin, LoginManager, login_user, current_user
+from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user
 
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
@@ -159,3 +159,10 @@ def login():
         return redirect('/resume/list')
 
     return render_template("login.html")
+
+
+@app.route('/logout')
+def route_logout():
+    """Logout"""
+    logout_user()
+    return redirect("/")
