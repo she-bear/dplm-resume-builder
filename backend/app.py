@@ -3,6 +3,7 @@ import os
 from mysql.connector import connect, errors
 from flask import Flask, request, render_template, redirect
 from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user
+import backend
 
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
@@ -39,48 +40,6 @@ def load_user(user_id):
     return UserSession(user_id)
 
 
-def user_add(user_login, user_pwd, cnx):
-    """ Запрос на добавление пользователя (вернет int в случае успеха и None, если exception)"""
-
-    insert_user_query = """
-    INSERT users
-    VALUES
-        (DEFAULT, %s, %s)
-    """
-    val_tuple = (
-        user_login,
-        user_pwd,
-    )
-    try:
-        with cnx.cursor() as cursor:
-            cursor.execute(insert_user_query, val_tuple)
-            cnx.commit()
-            # получить ID пользователя
-            return cursor.lastrowid
-    except errors.Error as err:
-        print('Data insertion error for user ', user_login, '\n', err)
-        return None
-
-
-def user_login(user_login, cnx):
-    """ Запрос на проверку существования пользователя (вернет int в случае успеха и None, если exception)"""
-
-    get_user_query = """
-    SELECT id, password FROM users WHERE login=%s;
-    """
-    val_tuple = (
-        user_login,
-    )
-    try:
-        with cnx.cursor() as cursor:
-            cursor.execute(get_user_query, val_tuple)
-            result = cursor.fetchone()
-            return result
-    except errors.Error as err:
-        print('Data receiving error for login!', '\n', err)
-        return None
-
-
 @app.route("/")
 def home():
     """Главная страница"""
@@ -111,7 +70,7 @@ def register():
                 password=db_password,
                 database=db_name
             ) as connection:
-                user_id = user_add(username, password, connection)
+                user_id = backend.user_add(username, password, connection)
                 if user_id is None:
                     return render_template("register.html", registration_error=True)
                 user_object = UserSession(user_id)
@@ -140,7 +99,7 @@ def login():
                 password=db_password,
                 database=db_name
             ) as connection:
-                user_data = user_login(username, connection)
+                user_data = backend.user_login(username, connection)
                 if user_data is None:
                     return render_template("login.html", user_not_found=True)
                 user_id, user_password = user_data
