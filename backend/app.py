@@ -2,7 +2,7 @@
 import os
 from mysql.connector import connect, errors
 from flask import Flask, request, render_template, redirect
-from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user
+from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user, login_required
 import backend
 
 
@@ -21,7 +21,7 @@ class UserSession(UserMixin):
         """Создает объект пользователя по его ID"""
         self.id = userid
 
-    def get_id_init(self):
+    def get_id_int(self):
         """Какое число сохранить у пользователя на компьютере в cookies"""
         return int(self.id)
 
@@ -125,3 +125,33 @@ def route_logout():
     """Logout"""
     logout_user()
     return redirect("/")
+
+
+@login_required
+@app.route("/resume/create", methods=['post', 'get'])
+def resume_create():
+    """Создание резюме"""
+    if request.method == 'POST':
+        resume_title = request.form.get('resume_title', '', str)
+        resume_text = request.form.get('resume_text', '', str)
+        # установка соединения с БД
+        try:
+            with connect(
+                host=db_host,
+                user=db_user,
+                password=db_password,
+                database=db_name
+            ) as connection:
+                user_id = current_user.get_id_int()
+                resume_id = backend.resume_create(
+                    user_id, resume_title, resume_text, connection)
+                if resume_id is None:
+                    return render_template("edit.html", resume_create_error=True)
+
+        except errors.Error as err:
+            print('Cannot connect to MySQL server', '\n', err)
+            return render_template("edit.html", resume_create_error=True)
+
+        return redirect('/resume/list')
+
+    return render_template("edit.html")

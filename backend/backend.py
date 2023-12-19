@@ -42,3 +42,26 @@ def user_login(user_login, cnx):
     except errors.Error as err:
         print('Data receiving error for login!', '\n', err)
         return None
+
+
+def resume_create(user_id, resume_title, resume_text, cnx):
+    """Создание резюме"""
+    create_resume_query = """
+    INSERT resumes 
+    VALUES
+        (DEFAULT, %s, %s, %s);
+    """
+    val_tuple = (
+        user_id,
+        resume_title,
+        resume_text,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(create_resume_query, val_tuple)
+            cnx.commit()
+            # получить маркер успешности операции
+            return cursor.lastrowid
+    except errors.Error as err:
+        print('Data insertion error, resume for user ', user_login, '\n', err)
+        return None

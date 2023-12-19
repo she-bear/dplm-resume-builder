@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="edit center">
+    <form action="/resume/create" method="post">
+        <div class="edit__content">
+            <span class="edit__title">Resume Title</span>
+
+            {% if resume_create_error %}
+            <div>
+                <p>Resume create failed!</p>
+            </div>
+            {% endif %}
+            <input type="text" class="edit__input" name="resume_title">
+
+            <textarea class="edit__text" name="resume_text"></textarea>
+
+            <div class="edit__buttons">
+                <button type="submit" class="list__button">Save</button>
+                <form action="/resume/list">
+                    <button class="list__button button-del">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </form>
+</section>
+
+{% endblock content %}
