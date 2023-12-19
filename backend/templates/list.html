@@ -8,6 +8,11 @@
             <p>Resume list failed!</p>
         </div>
         {% endif %}
+        {% if get_resume_error %}
+        <div>
+            <p>Get resume failed!</p>
+        </div>
+        {% endif %}
 
         {% for resume in resumes %}
         <!-- <form class="list__item clearf"> -->

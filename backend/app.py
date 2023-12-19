@@ -180,3 +180,54 @@ def resume_list():
         return render_template("list.html", resume_list_error=True)
 
     return render_template("list.html", resumes=data)
+
+
+@login_required
+@app.route("/resume/edit/<int:param1>", methods=['post', 'get'])
+def resume_edit(param1):
+    """Редактирование резюме"""
+
+    if request.method == 'POST':
+        resume_title = request.form.get('resume_title', '', str)
+        resume_text = request.form.get('resume_text', '', str)
+        # установка соединения с БД
+        try:
+            with connect(
+                host=db_host,
+                user=db_user,
+                password=db_password,
+                database=db_name
+            ) as connection:
+                user_id = current_user.get_id_int()
+                resume_id = param1
+                new_resume_id = backend.resume_update(
+                    user_id, resume_id, resume_title, resume_text, connection)
+                if new_resume_id is None:
+                    return render_template("edit.html", resume_create_error=True)
+
+        except errors.Error as err:
+            print('Cannot connect to MySQL server', '\n', err)
+            return render_template("edit.html", resume_create_error=True)
+
+        return redirect('/resume/list')
+
+    try:
+        with connect(
+            host=db_host,
+            user=db_user,
+            password=db_password,
+            database=db_name
+        ) as connection:
+            user_id = current_user.get_id_int()
+            resume_id = param1
+
+            data = backend.resume_get(
+                user_id, resume_id, connection)
+            if resume_id is None:
+                return render_template("list.html", get_resume_error=True)
+            resume_title, resume_text = data
+            return render_template("edit.html", resume_id=resume_id, resume_title=resume_title, resume_text=resume_text)
+
+    except errors.Error as err:
+        print('Cannot connect to MySQL server', '\n', err)
+        return render_template("list.html", get_resume_error=True)
