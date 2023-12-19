@@ -155,3 +155,28 @@ def resume_create():
         return redirect('/resume/list')
 
     return render_template("edit.html")
+
+
+@login_required
+@app.route("/resume/list")
+def resume_list():
+    """Формирование списка резюме"""
+    try:
+        with connect(
+            host=db_host,
+            user=db_user,
+            password=db_password,
+            database=db_name
+        ) as connection:
+            user_id = current_user.get_id_int()
+            data = backend.resume_list(
+                user_id, connection)
+            print(data)
+            if data is None:
+                return render_template("list.html", resume_list_error=True)
+
+    except errors.Error as err:
+        print('Cannot connect to MySQL server', '\n', err)
+        return render_template("list.html", resume_list_error=True)
+
+    return render_template("list.html", resumes=data)

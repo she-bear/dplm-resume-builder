@@ -65,3 +65,24 @@ def resume_create(user_id, resume_title, resume_text, cnx):
     except errors.Error as err:
         print('Data insertion error, resume for user ', user_login, '\n', err)
         return None
+
+
+def resume_list(user_id, cnx):
+    """Получение списка резюме"""
+
+    get_resume_query = """
+    SELECT id, resume_title
+    FROM resumes
+    WHERE (user_id=%s);
+    """
+    val_tuple = (
+        user_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(get_resume_query, val_tuple)
+            result = cursor.fetchall()
+            return result
+    except errors.Error as err:
+        print('Data receiving error for resume list!', '\n', err)
+        return None
