@@ -13,12 +13,20 @@
             <p>Get resume failed!</p>
         </div>
         {% endif %}
+        {% if delete_resume_error %}
+        <div>
+            <p>Delete resume failed!</p>
+        </div>
+        {% endif %}
 
         {% for resume in resumes %}
         <!-- <form class="list__item clearf"> -->
         <input type="text" readonly value="{{ resume[1] }}" style="box-shadow: none">
 
         <form class="list__item" action="/resume/edit/{{ resume[0] }}"><button type="submit">Edit</button> </form>
+
+        <form class="list__item" action="/resume/delete/{{ resume[0] }}" method="post"><button
+                type="submit">Delete</button> </form>
 
         <form class="list__item"><button class="button-web" type="submit">Web</button> </form>
         <!-- </form> -->

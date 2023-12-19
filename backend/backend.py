@@ -133,3 +133,25 @@ def resume_update(user_id, resume_id, resume_title, resume_text, cnx):
     except errors.Error as err:
         print('Data receiving error for get resume!', '\n', err)
         return None
+
+
+def resume_delete(user_id, resume_id, cnx):
+    """Удаление резюме"""
+
+    delete_resume_query = """
+    DELETE FROM resumes
+    WHERE (user_id=%s) AND (id=%s);
+    """
+    val_tuple = (
+        user_id,
+        resume_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(delete_resume_query, val_tuple)
+            cnx.commit()
+            # получить маркер успешности операции
+            return cursor.rowcount
+    except errors.Error as err:
+        print('Data receiving error for get resume!', '\n', err)
+        return None
