@@ -171,7 +171,6 @@ def resume_list():
             user_id = current_user.get_id_int()
             data = backend.resume_list(
                 user_id, connection)
-            print(data)
             if data is None:
                 return render_template("list.html", resume_list_error=True)
 
