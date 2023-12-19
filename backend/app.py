@@ -4,7 +4,7 @@ from mysql.connector import connect, errors
 from flask import Flask, request, render_template, redirect
 from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user, login_required
 import backend
-
+import markdown
 
 db_host = os.getenv("MYSQL_HOST", "localhost")
 db_user = os.getenv("MYSQL_USER", "root")
@@ -256,3 +256,32 @@ def resume_delete(param1):
         return render_template("list.html", delete_resume_error=True)
 
     return redirect('/resume/list')
+
+
+@login_required
+@app.route("/resume/get/<int:param1>")
+def resume_get(param1):
+    """Получение резюме"""
+
+    try:
+        with connect(
+            host=db_host,
+            user=db_user,
+            password=db_password,
+            database=db_name
+        ) as connection:
+            user_id = current_user.get_id_int()
+            resume_id = param1
+            data = backend.resume_get(
+                user_id, resume_id, connection)
+            if data is None:
+                return render_template("list.html", get_resume_error=True)
+            resume_title, resume_text = data
+
+    except errors.Error as err:
+        print('Cannot connect to MySQL server', '\n', err)
+        return render_template("list.html", get_resume_error=True)
+
+    resume_text = markdown.markdown(resume_text, extensions=[
+                                    'markdown.extensions.tables'])
+    return render_template("view.html", resume_title=resume_title, resume_text=resume_text)
