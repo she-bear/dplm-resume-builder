@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="list center">
+    <div class="list__content">
+        {% if resume_list_error %}
+        <div>
+            <p>Resume list failed!</p>
+        </div>
+        {% endif %}
+        {% if get_resume_error %}
+        <div>
+            <p>Get resume failed!</p>
+        </div>
+        {% endif %}
+        {% if delete_resume_error %}
+        <div>
+            <p>Delete resume failed!</p>
+        </div>
+        {% endif %}
+        {% if get_resume_error %}
+        <div>
+            <p>Get resume failed!</p>
+        </div>
+        {% endif %}
+
+        {% for resume in resumes %}
+        <div class="list__item clearf">
+            <input type="text" readonly value="{{ resume[1] }}" style="box-shadow: none">
+
+            <form action="/resume/edit/{{ resume[0] }}"><button type="submit">Edit</button> </form>
+
+            <form action="/resume/get/{{ resume[0] }}"><button class="button-web" type="submit">Web</button> </form>
+
+            <form action="/resume/delete/{{ resume[0] }}" method="post"><button class="button-del"
+                    type="submit">Delete</button> </form>
+        </div>
+        {% endfor %}
+
+        <form action="/resume/create" method="get">
+            <button class="list__button"> + Create New</button>
+        </form>
+    </div>
+</section>
+
+{% endblock content %}

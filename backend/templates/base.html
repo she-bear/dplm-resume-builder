@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,13 +17,14 @@
 <body>
     <header class="header center">
         <div class="header__left">
-            <span class="logo">
+            <a href="/" class="logo">
                 Resume Builder.
-            </span>
+            </a>
         </div>
         <div class="header__right">
-            <a href="#" class="header__link">Log In</a>
-            <button class="header__button">Sign Up</button>
+            {% if user_is_authenticated %}
+            <form action="/logout"><button class="header__button">Log Out</button></form>
+            {% endif %}
         </div>
     </header>
 

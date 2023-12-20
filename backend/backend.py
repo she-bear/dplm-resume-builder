@@ -42,3 +42,116 @@ def user_login(user_login, cnx):
     except errors.Error as err:
         print('Data receiving error for login!', '\n', err)
         return None
+
+
+def resume_create(user_id, resume_title, resume_text, cnx):
+    """Создание резюме"""
+    create_resume_query = """
+    INSERT resumes 
+    VALUES
+        (DEFAULT, %s, %s, %s);
+    """
+    val_tuple = (
+        user_id,
+        resume_title,
+        resume_text,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(create_resume_query, val_tuple)
+            cnx.commit()
+            # получить маркер успешности операции
+            return cursor.lastrowid
+    except errors.Error as err:
+        print('Data insertion error, resume for user ', user_login, '\n', err)
+        return None
+
+
+def resume_list(user_id, cnx):
+    """Получение списка резюме"""
+
+    get_resume_query = """
+    SELECT id, resume_title
+    FROM resumes
+    WHERE (user_id=%s);
+    """
+    val_tuple = (
+        user_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(get_resume_query, val_tuple)
+            result = cursor.fetchall()
+            return result
+    except errors.Error as err:
+        print('Data receiving error for resume list!', '\n', err)
+        return None
+
+
+def resume_get(user_id, resume_id, cnx):
+    """Получение резюме"""
+
+    get_resume_query = """
+    SELECT resume_title, resume_text 
+    FROM resumes 
+    WHERE (user_id=%s) AND (id=%s);
+    """
+    val_tuple = (
+        user_id,
+        resume_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(get_resume_query, val_tuple)
+            result = cursor.fetchone()
+            return result
+    except errors.Error as err:
+        print('Data receiving error for get resume!', '\n', err)
+        return None
+
+
+def resume_update(user_id, resume_id, resume_title, resume_text, cnx):
+    """Редактирование резюме"""
+
+    update_resume_query = """
+    UPDATE resumes
+    SET resume_title = %s, resume_text = %s
+    WHERE (user_id=%s) AND (id=%s);
+    """
+    val_tuple = (
+        resume_title,
+        resume_text,
+        user_id,
+        resume_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(update_resume_query, val_tuple)
+            cnx.commit()
+            # получить маркер успешности операции
+            return cursor.lastrowid
+    except errors.Error as err:
+        print('Data receiving error for get resume!', '\n', err)
+        return None
+
+
+def resume_delete(user_id, resume_id, cnx):
+    """Удаление резюме"""
+
+    delete_resume_query = """
+    DELETE FROM resumes
+    WHERE (user_id=%s) AND (id=%s);
+    """
+    val_tuple = (
+        user_id,
+        resume_id,
+    )
+    try:
+        with cnx.cursor() as cursor:
+            cursor.execute(delete_resume_query, val_tuple)
+            cnx.commit()
+            # получить маркер успешности операции
+            return cursor.rowcount
+    except errors.Error as err:
+        print('Data receiving error for get resume!', '\n', err)
+        return None
