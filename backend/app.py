@@ -154,7 +154,6 @@ def resume_create():
 @app.route("/resume/list")
 def resume_list():
     """Формирование списка резюме"""
-    print(connection_info)
     try:
         with connect(**connection_info) as connection:
             user_id = current_user.get_id_int()
