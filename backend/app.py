@@ -241,5 +241,5 @@ def resume_get(resume_id):
         return render_template("list.html", get_resume_error=True)
 
     resume_text = markdown.markdown(resume_text, extensions=[
-                                    'markdown.extensions.tables'])
+                                    'markdown.extensions.tables', 'markdown.extensions.fenced_code'])
     return render_template("view.html", resume_title=resume_title, resume_text=resume_text)
