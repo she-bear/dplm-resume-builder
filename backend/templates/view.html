@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
-    <h1>{{ resume_title }}</h1>
-    <p>{{ resume_text | safe }}</p>
+<section class="edit center">
+    <div class="edit__content">
+        <h1 class="view__title">{{ resume_title }}</h1>
+
+        <p>{{ resume_text | safe }}</p>
+    </div>
 </section>
 
 {% endblock content %}

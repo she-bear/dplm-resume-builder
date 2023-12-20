@@ -293,6 +293,10 @@ body {
     flex-direction: column;
 }
 
+.edit__content .view__title {
+    margin-bottom: 15px;
+}
+
 .edit__title {
     color: #333;
     font-size: 15px;
