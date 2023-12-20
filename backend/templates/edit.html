@@ -20,10 +20,11 @@
 
             <div class="edit__buttons">
                 <button type="submit" class="list__button">Save</button>
-                <form action="/resume/list">
-                    <button class="list__button button-del">Cancel</button>
-                </form>
+                <button class="list__button button-del" form="cancelform">Cancel</button>
             </div>
+        </form>
+
+        <form action="/resume/list" id="cancelform">
         </form>
 </section>
 
