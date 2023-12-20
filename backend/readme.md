@@ -173,3 +173,32 @@ login для доступа: нужен
 ```
 flask --app app.py run
 ```
+## Подключение и использование dotenv
+
+https://ramziv.com/article/40
+
+https://pypi.org/project/python-dotenv/
+
+**python-dotenv** - это пакет, который считывает пары ключ-значение из файла .env, и загружает необходимые приложению переменные среды.
+
+В нашем случае этот пакет будет использоваться, чтобы считать переменные среды для работой с базой данных.
+
+1. Установка:
+```
+pip install python-dotenv
+```
+
+2. Затем выполняем pip freeze (чтобы обновился файл requirements.txt):
+```
+pip3 freeze > requirements.txt
+```
+
+3. В папке проекта создаем файл .env и переносим в него содержимое файла mysql.env.
+
+4. Добавляем файл .env в .gitignore
+
+5. Подключаем к проекту (app.py):
+```
+from dotenv import load_dotenv
+load_dotenv()
+```
