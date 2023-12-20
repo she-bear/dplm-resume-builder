@@ -187,15 +187,16 @@ body {
 }
 
 .list__item {
-    width: 600px;
+    width: 800px;
     display: flex;
     border-radius: 10px;
     border: 1px solid #EAEAEA;
     background: transparent;
+    margin-bottom: 10px;
 }
 
 .list__item input {
-    width: 480px;
+    width: 680px;
     box-shadow: none;
     height: 65px;
     padding-left: 25px;
@@ -241,10 +242,15 @@ body {
     line-height: normal;
     background: #377DFF; 
     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+    opacity: 90%;
 }  
 
 .list__item .button-web {
     background: #233142;
+}
+
+.list__item .button-del {
+    background: #de6449;
 }
 
 /* Придумать потом */
