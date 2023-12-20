@@ -3,28 +3,26 @@
 {% block content %}
 <section class="edit center">
     {% if resume_id %}
-    <form action="/resume/edit/{{ resume_id }}" method="post">
+    <form action="/resume/edit/{{ resume_id }}" method="post" class="edit__content">
         {% else %}
-        <form action="/resume/create" method="post">
+        <form action="/resume/create" method="post" class="edit__content">
             {% endif %}
-            <div class="edit__content">
-                <span class="edit__title">Resume Title</span>
+            <span class="edit__title">Resume Title</span>
 
-                {% if resume_create_error %}
-                <div>
-                    <p>Resume create failed!</p>
-                </div>
-                {% endif %}
-                <input type="text" class="edit__input" name="resume_title" value="{{ resume_title }}">
+            {% if resume_create_error %}
+            <div>
+                <p>Resume create failed!</p>
+            </div>
+            {% endif %}
+            <input type="text" class="edit__input" name="resume_title" value="{{ resume_title }}">
 
-                <textarea class="edit__text" name="resume_text">{{ resume_text }}</textarea>
+            <textarea class="edit__text" name="resume_text">{{ resume_text }}</textarea>
 
-                <div class="edit__buttons">
-                    <button type="submit" class="list__button">Save</button>
-                    <form action="/resume/list">
-                        <button class="list__button button-del">Cancel</button>
-                    </form>
-                </div>
+            <div class="edit__buttons">
+                <button type="submit" class="list__button">Save</button>
+                <form action="/resume/list">
+                    <button class="list__button button-del">Cancel</button>
+                </form>
             </div>
         </form>
 </section>
