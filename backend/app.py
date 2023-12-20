@@ -182,8 +182,8 @@ def resume_list():
 
 
 @login_required
-@app.route("/resume/edit/<int:param1>", methods=['post', 'get'])
-def resume_edit(param1):
+@app.route("/resume/edit/<int:resume_id>", methods=['post', 'get'])
+def resume_edit(resume_id):
     """Редактирование резюме"""
 
     if request.method == 'POST':
@@ -198,7 +198,6 @@ def resume_edit(param1):
                 database=db_name
             ) as connection:
                 user_id = current_user.get_id_int()
-                resume_id = param1
                 new_resume_id = backend.resume_update(
                     user_id, resume_id, resume_title, resume_text, connection)
                 if new_resume_id is None:
@@ -218,8 +217,6 @@ def resume_edit(param1):
             database=db_name
         ) as connection:
             user_id = current_user.get_id_int()
-            resume_id = param1
-
             data = backend.resume_get(
                 user_id, resume_id, connection)
             if resume_id is None:
@@ -233,8 +230,8 @@ def resume_edit(param1):
 
 
 @login_required
-@app.route("/resume/delete/<int:param1>", methods=['post'])
-def resume_delete(param1):
+@app.route("/resume/delete/<int:resume_id>", methods=['post'])
+def resume_delete(resume_id):
     """Удаление резюме"""
 
     try:
@@ -245,7 +242,6 @@ def resume_delete(param1):
             database=db_name
         ) as connection:
             user_id = current_user.get_id_int()
-            resume_id = param1
             data = backend.resume_delete(
                 user_id, resume_id, connection)
             if data is None:
@@ -259,8 +255,8 @@ def resume_delete(param1):
 
 
 @login_required
-@app.route("/resume/get/<int:param1>")
-def resume_get(param1):
+@app.route("/resume/get/<int:resume_id>")
+def resume_get(resume_id):
     """Получение резюме"""
 
     try:
@@ -271,7 +267,6 @@ def resume_get(param1):
             database=db_name
         ) as connection:
             user_id = current_user.get_id_int()
-            resume_id = param1
             data = backend.resume_get(
                 user_id, resume_id, connection)
             if data is None:
