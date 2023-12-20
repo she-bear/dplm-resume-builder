@@ -35,6 +35,12 @@ login_manager.init_app(app)
 app.secret_key = os.getenv("SECRET_KEY", "secret key")
 
 
+@app.context_processor
+def inject_user_data():
+    """Внедрение переменных в шаблон"""
+    return dict(user_is_authenticated=current_user.is_authenticated)
+
+
 @login_manager.user_loader
 def load_user(user_id):
     """Загрузка пользователя из сессии при аутентификации.
