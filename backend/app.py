@@ -6,10 +6,12 @@ from flask_login import UserMixin, LoginManager, login_user, current_user, logou
 import backend
 import markdown
 
-db_host = os.getenv("MYSQL_HOST", "localhost")
-db_user = os.getenv("MYSQL_USER", "root")
-db_password = os.getenv("MYSQL_PASSWORD", "")
-db_name = os.getenv("MYSQL_DATABASE", "")
+connection_info = {
+    "host": os.getenv("MYSQL_HOST", "localhost"),
+    "user": os.getenv("MYSQL_USER", "root"),
+    "password": os.getenv("MYSQL_PASSWORD", ""),
+    "database": os.getenv("MYSQL_DATABASE", ""),
+}
 
 
 class UserSession(UserMixin):
@@ -64,12 +66,7 @@ def register():
             return render_template("register.html", password_dont_match=True)
         # установка соединения с БД
         try:
-            with connect(
-                host=db_host,
-                user=db_user,
-                password=db_password,
-                database=db_name
-            ) as connection:
+            with connect(**connection_info) as connection:
                 user_id = backend.user_add(username, password, connection)
                 if user_id is None:
                     return render_template("register.html", registration_error=True)
@@ -93,12 +90,7 @@ def login():
         password = request.form.get('password', '', str)
         # установка соединения с БД
         try:
-            with connect(
-                host=db_host,
-                user=db_user,
-                password=db_password,
-                database=db_name
-            ) as connection:
+            with connect(**connection_info) as connection:
                 user_data = backend.user_login(username, connection)
                 if user_data is None:
                     return render_template("login.html", user_not_found=True)
@@ -136,12 +128,7 @@ def resume_create():
         resume_text = request.form.get('resume_text', '', str)
         # установка соединения с БД
         try:
-            with connect(
-                host=db_host,
-                user=db_user,
-                password=db_password,
-                database=db_name
-            ) as connection:
+            with connect(**connection_info) as connection:
                 user_id = current_user.get_id_int()
                 resume_id = backend.resume_create(
                     user_id, resume_title, resume_text, connection)
@@ -161,13 +148,9 @@ def resume_create():
 @app.route("/resume/list")
 def resume_list():
     """Формирование списка резюме"""
+    print(connection_info)
     try:
-        with connect(
-            host=db_host,
-            user=db_user,
-            password=db_password,
-            database=db_name
-        ) as connection:
+        with connect(**connection_info) as connection:
             user_id = current_user.get_id_int()
             data = backend.resume_list(
                 user_id, connection)
@@ -191,12 +174,7 @@ def resume_edit(resume_id):
         resume_text = request.form.get('resume_text', '', str)
         # установка соединения с БД
         try:
-            with connect(
-                host=db_host,
-                user=db_user,
-                password=db_password,
-                database=db_name
-            ) as connection:
+            with connect(**connection_info) as connection:
                 user_id = current_user.get_id_int()
                 new_resume_id = backend.resume_update(
                     user_id, resume_id, resume_title, resume_text, connection)
@@ -210,12 +188,7 @@ def resume_edit(resume_id):
         return redirect('/resume/list')
 
     try:
-        with connect(
-            host=db_host,
-            user=db_user,
-            password=db_password,
-            database=db_name
-        ) as connection:
+        with connect(**connection_info) as connection:
             user_id = current_user.get_id_int()
             data = backend.resume_get(
                 user_id, resume_id, connection)
@@ -235,12 +208,7 @@ def resume_delete(resume_id):
     """Удаление резюме"""
 
     try:
-        with connect(
-            host=db_host,
-            user=db_user,
-            password=db_password,
-            database=db_name
-        ) as connection:
+        with connect(**connection_info) as connection:
             user_id = current_user.get_id_int()
             data = backend.resume_delete(
                 user_id, resume_id, connection)
@@ -260,12 +228,7 @@ def resume_get(resume_id):
     """Получение резюме"""
 
     try:
-        with connect(
-            host=db_host,
-            user=db_user,
-            password=db_password,
-            database=db_name
-        ) as connection:
+        with connect(**connection_info) as connection:
             user_id = current_user.get_id_int()
             data = backend.resume_get(
                 user_id, resume_id, connection)
