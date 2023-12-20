@@ -5,6 +5,9 @@ from flask import Flask, request, render_template, redirect
 from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user, login_required
 import backend
 import markdown
+from dotenv import load_dotenv
+
+load_dotenv()
 
 connection_info = {
     "host": os.getenv("MYSQL_HOST", "localhost"),
