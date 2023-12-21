@@ -6,6 +6,7 @@ from flask_login import UserMixin, LoginManager, login_user, current_user, logou
 import backend
 import markdown
 from dotenv import load_dotenv
+from passlib.hash import pbkdf2_sha256
 
 load_dotenv()
 
@@ -73,10 +74,11 @@ def register():
         # проверка соответствия паролей
         if password != password_confirm:
             return render_template("register.html", password_dont_match=True)
+        hash_password = pbkdf2_sha256.hash(password)
         # установка соединения с БД
         try:
             with connect(**connection_info) as connection:
-                user_id = backend.user_add(username, password, connection)
+                user_id = backend.user_add(username, hash_password, connection)
                 if user_id is None:
                     return render_template("register.html", registration_error=True)
                 user_object = UserSession(user_id)
@@ -105,7 +107,8 @@ def login():
                     return render_template("login.html", user_not_found=True)
                 user_id, user_password = user_data
 
-                if password != user_password:
+                if not pbkdf2_sha256.verify(
+                        password, user_password):
                     return render_template("login.html", incorrect_password=True)
 
                 user_object = UserSession(user_id)
