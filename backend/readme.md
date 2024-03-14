@@ -64,10 +64,10 @@ login для доступа: не нужен
             username: string
             password: string
 ответ:
-        html (redirect???)
+        html
         message (ok, error)
 
-login для доступа: не нужен (???)
+login для доступа: не нужен
 ```
 
 Шаблон: login.html
